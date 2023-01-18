@@ -1,0 +1,18 @@
+body {
+    background-color: #212529;
+    color: #dee2e6;
+}
+h3 {
+    text-align: center;
+    margin-top: 25px;
+}
+.ui {
+    padding: 1rem;
+}
+
+hr {
+    color: #dee2e6;
+}
+.progress-bar {
+    background: -webkit-linear-gradient(left, #33156d 0%, #f282bc 100%);
+}
