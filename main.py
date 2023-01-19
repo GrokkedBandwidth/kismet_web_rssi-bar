@@ -7,7 +7,7 @@ from random import randint
 
 USERNAME = 'kismet'
 PASSWORD = 'kismet'
-IP = '192.168.1.167'
+IP = 'localhost'
 
 app = Flask(__name__)
 Bootstrap(app)
