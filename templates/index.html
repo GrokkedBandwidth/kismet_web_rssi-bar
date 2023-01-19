@@ -16,18 +16,31 @@
             $(channel).text('Current Channel: '+sent_data[2]);
             best_seen = "#best"
             $(best_seen).text('Best Seen: '+sent_data[3] + ' Time: ' + sent_data[4]);
+            current_rssi = "#current_rssi"
+            $(current_rssi).text('Current RSSI: '+sent_data[1]);
         }
     }
-</script>
+    </script>
+    <script type='text/javascript'>
+        $(function() {
+            $('a#lock_channel').on('click', function(e) {
+            e.preventDefault()
+            $.getJSON('/lock_channel',
+                function(data) {
+            });
+            return false;
+        });
+        });
+    </script>
 </head>
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-lg-5 col-md-5 col-sm-6 ui">
+            <div class="col-lg-3 col-md-3 col-sm-6 ui">
                 {% if mac == '' %}
-                    <h4>Enter MAC: Ex FF:FF:FF:FF:FF:FF</h4>
+                    <h5>Enter MAC: Ex FF:FF:FF:FF:FF:FF</h5>
                 {% else %}
-                    <h4>Current MAC: {{mac}}</h4>
+                    <h5>Current MAC: {{mac}}</h5>
                 {% endif %}
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6 ui">
@@ -35,12 +48,12 @@
                     <input type="text" name="mac" maxlength="17" id="mac"/>
                     <button class="btn btn-primary" type="submit">Set MAC</button>
                 </form>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-6 sub_row ui">
                 <button class="btn btn-primary" onclick="dfFunction()" id="df">Start DF</button>
-
-
             </div>
             <div class="col-lg-3 col-md-3 col-sm-6 sub_row ui">
-                <h4 id="channel">Current Channel: </h4>
+                <h5 id="channel">Current Channel: </h5>
             </div>
         </div>
         <hr>
@@ -56,13 +69,13 @@
         </div>
         <div class="row">
             <div class="col-lg-2 col-md-2 col-sm-6 ui">
-                <button class="btn btn-primary" type="submit">Lock Channel</button>
+                <a class="btn btn-primary" href="#" id="lock_channel">Lock Channel</a>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-6 ui">
-                <h4 id="best">Best Seen: 0</h4>
+                <h5 id="best">Best Seen: 0</h5>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-6 ui">
-                <h2>Current RSSI: </h2>
+                <h2 id="current_rssi">Current RSSI: </h2>
             </div>
         </div>
         <hr>
