@@ -16,8 +16,14 @@ After Kismet is running, run the following:
 $ cd kismet_web_rssi-bar
 $ python3 main.py
 ````
-
 After launching, navigate to the provided link, which should be the local machines IP at port 5001
+
+## Manual 
+![image](https://user-images.githubusercontent.com/96986202/224188916-2d3dd191-5296-4cfd-94f2-4f3d8310014d.png)
+
+Rssi bar can be started without Kismet being started, but will not DF without an active Kismet server at the targeted IP address. 
+Once a MAC is entered, hit 'Set MAC' and 'Start DF'. Once set, the Enter MAC label will change to the current MAC address and the Current Channel label
+will reflect current channel in Kismet. Lock Channel button will set the channel of all active Kismet interfaces to the Current Channel label.
 
 ## Kismet Server Login
 
