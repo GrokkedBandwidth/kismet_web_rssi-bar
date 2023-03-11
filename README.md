@@ -8,14 +8,14 @@ by Kismet.
 
 ````
 cd kismet_web_rssi-bar
-$ pip3 install -r requirements.txt
+pip3 install -r requirements.txt
 ````
 
 ## Launching
 After Kismet is running, run the following:
 ````
-$ cd kismet_web_rssi-bar
-$ python3 main.py
+cd kismet_web_rssi-bar
+python3 main.py
 ````
 After launching, navigate to the provided link, which should be the local machines IP at port 5001
 
