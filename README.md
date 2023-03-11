@@ -7,7 +7,8 @@ by Kismet.
 ## Installation Requirements
 
 ````
-$ pip install -r requirements.txt
+cd kismet_web_rssi-bar
+$ pip3 install -r requirements.txt
 ````
 
 ## Launching
