@@ -89,7 +89,7 @@ def lock_channel():
         requests.post(
             url=f"http://{USERNAME}:{PASSWORD}@{IP}:2501/datasource/by-uuid/{item}/set_channel.cmd",
             json={'channel': current_channel})
-    return results
+    return f"Channel locked to {current_channel}"
 
 @app.route('/test', methods=['POST', 'GET'])
 def test():

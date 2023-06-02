@@ -17,3 +17,10 @@ function dfFunction() {
     }
 }
 
+function lockChannel() {
+    $('a#lock_channel').on('click', function(e) {
+        e.preventDefault();
+        $.getJSON('/lock_channel');
+    });
+}
+
