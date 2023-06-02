@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, redirect, url_for, request, jsonify
+from flask import Flask, render_template, Response, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 import json
 import requests
@@ -96,14 +96,13 @@ def test():
     def generate():
         while True:
             response = {}
-            randum_num = randint(1,100)
+            randum_num = randint(1, 100)
             response[0] = randum_num
             return_string = 'data:' + json.dumps(response) + "\n\n"
             print(f'{return_string} test data')
             yield return_string
             time.sleep(.2)
     return Response(generate(), mimetype='text/event-stream')
-
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5001)
