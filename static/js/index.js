@@ -53,3 +53,29 @@ function lockChannel() {
     });
 }
 
+function oneSixEleven() {
+    $('a#oneSixEleven').on('click', function(e) {
+        e.preventDefault();
+        $.getJSON('/one_six_eleven');
+    });
+}
+function twoGHz() {
+    $('a#twoGHz').on('click', function(e) {
+        e.preventDefault();
+        $.getJSON('/two_GHz');
+    });
+}
+function fiveGHz() {
+    $('a#fiveGHz').on('click', function(e) {
+        e.preventDefault();
+        $.getJSON('/five_GHz');
+    });
+}
+function hopAll() {
+    $('a#hopAll').on('click', function(e) {
+        e.preventDefault();
+        $.getJSON('/hop_all');
+    });
+}
+
+

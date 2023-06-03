@@ -7,7 +7,7 @@ from random import randint
 
 USERNAME = 'kismet'
 PASSWORD = 'kismet'
-IP = 'localhost'
+IP = '192.168.1.167'
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -90,6 +90,81 @@ def lock_channel():
             url=f"http://{USERNAME}:{PASSWORD}@{IP}:2501/datasource/by-uuid/{item}/set_channel.cmd",
             json={'channel': current_channel})
     return f"Channel locked to {current_channel}"
+
+@app.route('/one_six_eleven', methods=['GET'])
+def one_six_eleven():
+    hop_params = {
+        'channels': ['1', '6', '11'],
+        'hoprate': 5
+    }
+    interface_list = []
+    results = requests.post(
+        url=f"http://{USERNAME}:{PASSWORD}@{IP}:2501/datasource/all_sources.json",
+        json=source_params).json()
+    for item in results:
+        interface_list.append(item['kismet.datasource.uuid'])
+    for item in interface_list:
+        lock = requests.post(
+            url=f"http://{USERNAME}:{PASSWORD}@{IP}:2501/datasource/by-uuid/{item}/set_channel.cmd",
+            json=hop_params, )
+    return f"Hopping 1,6,11"
+
+@app.route('/two_GHz', methods=['GET'])
+def two_GHz():
+    hop_params = {
+        'channels': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'],
+        'hoprate': 5
+    }
+    interface_list = []
+    results = requests.post(
+        url=f"http://{USERNAME}:{PASSWORD}@{IP}:2501/datasource/all_sources.json",
+        json=source_params).json()
+    for item in results:
+        interface_list.append(item['kismet.datasource.uuid'])
+    for item in interface_list:
+        lock = requests.post(
+            url=f"http://{USERNAME}:{PASSWORD}@{IP}:2501/datasource/by-uuid/{item}/set_channel.cmd",
+            json=hop_params, )
+    return f"Hopping 2GHz"
+
+@app.route('/five_GHz', methods=['GET'])
+def five_GHz():
+    hop_params = {
+        'channels': ['36', '40', '44', '48', '52', '56', '60', '64', '100', '104', '108', '112', '116', '120', '124',
+                     '128', '132', '136', '140', '144', '149', '153', '157', '161', '165'],
+        'hoprate': 5
+    }
+    interface_list = []
+    results = requests.post(
+        url=f"http://{USERNAME}:{PASSWORD}@{IP}:2501/datasource/all_sources.json",
+        json=source_params).json()
+    for item in results:
+        interface_list.append(item['kismet.datasource.uuid'])
+    for item in interface_list:
+        lock = requests.post(
+            url=f"http://{USERNAME}:{PASSWORD}@{IP}:2501/datasource/by-uuid/{item}/set_channel.cmd",
+            json=hop_params, )
+    return f"Hopping 5GHz"
+
+@app.route('/hop_all', methods=['GET'])
+def hop_all():
+    hop_params = {
+        'channels': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14',
+                     '36', '40', '44', '48', '52', '56', '60', '64', '100', '104', '108', '112',
+                     '116', '120', '124', '128', '132', '136', '140', '144', '149', '153', '157', '161', '165'],
+        'hoprate': 5
+    }
+    interface_list = []
+    results = requests.post(
+        url=f"http://{USERNAME}:{PASSWORD}@{IP}:2501/datasource/all_sources.json",
+        json=source_params).json()
+    for item in results:
+        interface_list.append(item['kismet.datasource.uuid'])
+    for item in interface_list:
+        lock = requests.post(
+            url=f"http://{USERNAME}:{PASSWORD}@{IP}:2501/datasource/by-uuid/{item}/set_channel.cmd",
+            json=hop_params, )
+    return f"Hopping all possible channels"
 
 @app.route('/test', methods=['POST', 'GET'])
 def test():

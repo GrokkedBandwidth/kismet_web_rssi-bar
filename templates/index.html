@@ -47,6 +47,26 @@
             </div>
         </div>
         <hr>
+        <div class="row">
+            <h5>Channel Hopping Options</h5>
+        </div>
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-2 ui">
+                <a class="btn btn-primary" id="oneSixEleven" onclick="oneSixEleven()">1, 6, 11</a>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 ui">
+                <a class="btn btn-primary" id="twoGHz" onclick="twoGHz()">2 GHz</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-2 ui">
+                <a class="btn btn-primary" id="fiveGHz" onclick="fiveGHz()">5 GHz</a>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 ui">
+                <a class="btn btn-primary" id="hopAll" onclick="hopAll()">Hop all</a>
+            </div>
+
+        </div>
     </div>
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}" charset="utf-8"></script>
     <script src="{{ url_for('static', filename='js/jquery.js') }}" charset="utf-8"></script>
