@@ -35,7 +35,7 @@ main.py prior to running. By default, username and password are both set to 'kis
 
 The following is the intended features to be added to this project:
 
-* Default channel hopping combinations (similar to those in offline version of rssi bar)
+* <s>Default channel hopping combinations (similar to those in offline version of rssi bar)</s>
 * Options menu (For ui preferences and Kismet Server changes)
 * Active Direction Finding
 * Mapping UI
