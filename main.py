@@ -1,3 +1,4 @@
+import requests.exceptions
 from flask import Flask, render_template, Response, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 import json
@@ -11,7 +12,10 @@ Bootstrap(app)
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
-    mac.get_interfaces()
+    try:
+        mac.get_interfaces()
+    except requests.exceptions.ConnectionError:
+        return "<h2>Please start Kismet or check if your self.IP inside mac.py is pointing to the correct Kismet IP.</h2>"
     return render_template('index.html', mac=mac.mac, channels=mac.interfaces)
 
 @app.route('/mac', methods=['GET', 'POST'])
