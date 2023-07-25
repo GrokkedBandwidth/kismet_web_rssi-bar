@@ -4,7 +4,7 @@ class Mac:
     def __init__(self):
         self.username = 'kismet'
         self.password = 'kismet'
-        self.IP = '192.168.1.167'
+        self.IP = 'localhost'
         self.mac = "FF:FF:FF:FF:FF:FF"
         self.best_seen = -120
         self.last_seen = 0
