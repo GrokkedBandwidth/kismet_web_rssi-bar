@@ -47,25 +47,31 @@
             </div>
         </div>
         <hr>
-        <div class="row">
-            <h5>Channel Hopping Options</h5>
-        </div>
-        <div class="row">
-            <div class="col-lg-2 col-md-2 col-sm-2 ui">
-                <a class="btn btn-primary" id="oneSixEleven">1, 6, 11</a>
-            </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 ui">
-                <a class="btn btn-primary" id="twoGHz">2 GHz</a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-2 col-md-2 col-sm-2 ui">
-                <a class="btn btn-primary" id="fiveGHz">5 GHz</a>
-            </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 ui">
-                <a class="btn btn-primary" id="hopAll">Hop all</a>
-            </div>
-
+         <div class="interface-container">
+            {% for item in channels %}
+                <h4>{{item['kismet.datasource.interface']}}</h4>
+                <div class="selection-container">
+                    <div class="{{item['kismet.datasource.uuid']}}">
+                        {% for num in item['kismet.datasource.channels'] %}
+                            {% if num in item['kismet.datasource.hop_channels'] and item['kismet.datasource.hopping'] == 1 %}
+                                <a class="btn btn-primary channel" href="{{ url_for('lock_channel', uuid=item['kismet.datasource.uuid'], channel=num)}}">{{num}}</a>
+                            {% elif item['kismet.datasource.hopping'] == 0 and item['kismet.datasource.channel'] == num %}
+                                <a class="btn btn-primary channel" href="{{ url_for('lock_channel', uuid=item['kismet.datasource.uuid'], channel=num)}}">{{num}}</a>
+                            {% else %}
+                                <a class="btn btn-outline-primary channel" href="{{ url_for('lock_channel', uuid=item['kismet.datasource.uuid'], channel=num)}}">{{num}}</a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="pre-select-options {{item['kismet.datasource.uuid']}}">
+                    <a class="btn btn-primary pre-select one" href="{{ url_for('survey_channels', uuid=item['kismet.datasource.uuid'], option='one')}}">1, 6, 11</a>
+                    <a class="btn btn-primary pre-select two" href="{{ url_for('survey_channels', uuid=item['kismet.datasource.uuid'], option='two')}}">2 GHz (No HT)</a>
+                    {% if '36' in item['kismet.datasource.channels'] %}
+                        <a class="btn btn-primary pre-select three" href="{{ url_for('survey_channels', uuid=item['kismet.datasource.uuid'], option='three')}}">5 GHz (No HT)</a>
+                    {% endif %}
+                    <a class="btn btn-primary pre-select four" href="{{ url_for('survey_channels', uuid=item['kismet.datasource.uuid'], option='four')}}">All</a>
+                </div>
+            {% endfor %}
         </div>
     </div>
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}" charset="utf-8"></script>

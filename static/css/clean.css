@@ -16,3 +16,27 @@ hr {
 .progress-bar {
     background: -webkit-linear-gradient(left, #33156d 0%, #f282bc 100%);
 }
+.interface-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.pre-select-options {
+    display: flex;
+    justify-content: space-between;
+    margin: 2%;
+}
+.selection-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+.channel {
+    margin: 2px;
+}
+
+.pre-select {
+    margin: 2px;
+}

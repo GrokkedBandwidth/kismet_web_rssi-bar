@@ -46,34 +46,127 @@ function dfFunction() {
     }
 }
 
-
-$('a#lock_channel').on('click', function(e) {
+$('a.channel').on('click', function(e) {
     e.preventDefault();
-    $.getJSON('/lock_channel');
+    var channel = e.currentTarget.textContent;
+    var uuid = e.currentTarget.parentNode.classList[0];
+    var xhr = new XMLHttpRequest();
+    var url = encodeURIComponent(JSON.stringify({"uuid": uuid})) + "/" + encodeURIComponent(JSON.stringify({"channel": channel}));
+    xhr.open("GET", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+        var buttons = e.currentTarget.parentNode.children;
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("btn-primary");
+            buttons[i].classList.add("btn-outline-primary");
+        }
+        e.currentTarget.classList.add("btn-primary");
+        e.currentTarget.classList.remove("btn-outline-primary");
+    }
+};
+xhr.send();
 });
 
-$('a#oneSixEleven').on('click', function(e) {
+$('a.one').on('click', function(e) {
     e.preventDefault();
-    $.getJSON('/one_six_eleven');
+    var uuid = e.currentTarget.parentNode.classList[1];
+    var xhr = new XMLHttpRequest();
+    var url = "hop/" + encodeURIComponent(JSON.stringify({"uuid": uuid})) + "/" + encodeURIComponent(JSON.stringify({"option": "one"}));
+    xhr.open("GET", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+        var buttons = $('div.' + uuid)[0].children;
+        for (var i = 0; i < buttons.length; i++) {
+            if (buttons[i].textContent === "1" || buttons[i].textContent === "6" || buttons[i].textContent === "11") {
+                buttons[i].classList.add("btn-primary");
+                buttons[i].classList.remove("btn-outline-primary");
+            } else {
+                buttons[i].classList.remove("btn-primary");
+                buttons[i].classList.add("btn-outline-primary");
+            }
+        }
+    }
+};
+xhr.send();
 });
 
-
-$('a#twoGHz').on('click', function(e) {
+$('a.two').on('click', function(e) {
     e.preventDefault();
-    $.getJSON('/two_GHz');
+    var uuid = e.currentTarget.parentNode.classList[1];
+    console.log(uuid);
+    var xhr = new XMLHttpRequest();
+    var url = "hop/" + encodeURIComponent(JSON.stringify({"uuid": uuid})) + "/" + encodeURIComponent(JSON.stringify({"option": "two"}));
+    console.log(url);
+    xhr.open("GET", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+        var buttons = $('div.' + uuid)[0].children;
+        var stop = false;
+        for (var i = 0; i < buttons.length; i++) {
+            if (stop === false && buttons[i].textContent.length < 4) {
+                buttons[i].classList.remove("btn-outline-primary");
+                buttons[i].classList.add("btn-primary");
+            } else {
+                buttons[i].classList.remove("btn-primary");
+                buttons[i].classList.add("btn-outline-primary");
+            }
+            console.log(stop);
+            if (buttons[i].textContent === "14") {
+                stop = true;
+            }
+        }
+    }
+};
+xhr.send();
 });
 
-
-$('a#fiveGHz').on('click', function(e) {
+$('a.three').on('click', function(e) {
     e.preventDefault();
-    $.getJSON('/five_GHz');
+    var uuid = e.currentTarget.parentNode.classList[1];
+    var xhr = new XMLHttpRequest();
+    var url = "hop/" + encodeURIComponent(JSON.stringify({"uuid": uuid})) + "/" + encodeURIComponent(JSON.stringify({"option": "three"}));
+    xhr.open("GET", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+        var buttons = $('div.' + uuid)[0].children;
+        console.log(buttons);
+        var stop = true;
+        for (var i = 0; i < buttons.length; i++) {
+            if (stop === false && buttons[i].textContent.length < 4) {
+                buttons[i].classList.remove("btn-outline-primary");
+                buttons[i].classList.add("btn-primary");
+            } else {
+                buttons[i].classList.remove("btn-primary");
+                buttons[i].classList.add("btn-outline-primary");
+            }
+            if (buttons[i].textContent === "14") {
+                stop = false;
+            }
+        }
+    }
+};
+xhr.send();
 });
-
-
-$('a#hopAll').on('click', function(e) {
+$('a.four').on('click', function(e) {
     e.preventDefault();
-    $.getJSON('/hop_all');
+    var uuid = e.currentTarget.parentNode.classList[1];
+    var xhr = new XMLHttpRequest();
+    var url = "hop/" + encodeURIComponent(JSON.stringify({"uuid": uuid})) + "/" + encodeURIComponent(JSON.stringify({"option": "four"}));
+    xhr.open("GET", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+        var buttons = $('div.' + uuid)[0].children;
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("btn-outline-primary");
+            buttons[i].classList.add("btn-primary");
+        }
+    }
+};
+xhr.send();
 });
-
-
 
