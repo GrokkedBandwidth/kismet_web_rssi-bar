@@ -27,13 +27,15 @@ function checkTime(last_time) {
 
 function dfFunction() {
     console.log("Opening the SSE connection")
+    $('#df').attr("onclick", "stopDF()")
+    $('#df').text("Stop DF")
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const oscillator = audioCtx.createOscillator();
     oscillator.type = "square";
     oscillator.frequency.setValueAtTime(0, audioCtx.currentTime); // value in hertz
     oscillator.connect(audioCtx.destination);
     oscillator.start(audioCtx.currentTime);
-    var source = new EventSource("/df");
+    const source = new EventSource("/df");
     source.onmessage = function(event) {
         sent_data = JSON.parse(event.data);
         bar = "#prog_0";
@@ -61,6 +63,10 @@ function dfFunction() {
         }
     }
 }
+
+function stopDF() {
+    location.reload();
+};
 
 $('a.channel').on('click', function(e) {
     e.preventDefault();
@@ -185,4 +191,11 @@ $('a.four').on('click', function(e) {
 };
 xhr.send();
 });
+
+$('#df').on('click', function(e) {
+    console.log(e);
+    $('#df').attr("onclick", "stopDF()")
+});
+
+
 
