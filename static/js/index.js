@@ -14,18 +14,28 @@ function adjustSound(oscillator, freq) {
     oscillator.frequency.value = freq;
 }
 
+function checkTime(last_time) {
+    if (last_time > 5) {
+        $(bar)[0].classList.remove("progress-bar");
+        $(bar)[0].classList.add("progress-bar-stale");
+
+    } else {
+        $(bar)[0].classList.add("progress-bar");
+        $(bar)[0].classList.remove("progress-bar-stale");
+    }
+}
+
 function dfFunction() {
     console.log("Opening the SSE connection")
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const oscillator = audioCtx.createOscillator();
     oscillator.type = "square";
-    oscillator.frequency.setValueAtTime(440, audioCtx.currentTime); // value in hertz
-    oscillator.start();
-    var localMute = true;
+    oscillator.frequency.setValueAtTime(0, audioCtx.currentTime); // value in hertz
+    oscillator.connect(audioCtx.destination);
+    oscillator.start(audioCtx.currentTime);
     var source = new EventSource("/df");
     source.onmessage = function(event) {
         sent_data = JSON.parse(event.data);
-        console.log(sent_data);
         bar = "#prog_0";
         $(bar).css('width', sent_data[0]+'%').attr('aria-valuenow', sent_data[0]);
         lbar = "#prog_0_label";
@@ -36,20 +46,19 @@ function dfFunction() {
         $(best_seen).text('Best Seen: '+sent_data[3] + ' Time: ' + sent_data[4]);
         current_rssi = "#current_rssi";
         $(current_rssi).text('Current RSSI: '+sent_data[1]);
+        if (mute === false) {
+            adjustSound(oscillator, sent_data[0]*8);
+        } else {
+            adjustSound(oscillator, 0);
+        }
         if (sent_data[5] > 5) {
             $(bar)[0].classList.remove("progress-bar");
             $(bar)[0].classList.add("progress-bar-stale");
+            adjustSound(oscillator, 0);
         } else {
             $(bar)[0].classList.add("progress-bar");
             $(bar)[0].classList.remove("progress-bar-stale");
         }
-        if (mute === false) {
-            oscillator.connect(audioCtx.destination);
-            adjustSound(oscillator, sent_data[0]*8);
-        } else {
-            oscillator.disconnect(audioCtx.destination);
-        }
-
     }
 }
 
