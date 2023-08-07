@@ -37,7 +37,7 @@ def df():
             results = mac.retrieve_mac()
             rssi = results[0]['kismet.common.signal.last_signal']
             mac.current_channel = results[0]['kismet.device.base.channel']
-            mac.bssid = results[0]['kismet.device.base.location/kismet.common.location.last/kismet.common.location.geopoint']
+            mac.bssid = results[0]["dot11.device.last_bssid"]
             response[0] = 120 - (int(rssi) * -1)
             response[1] = rssi
             response[2] = mac.current_channel
