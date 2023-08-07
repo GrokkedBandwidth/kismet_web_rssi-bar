@@ -22,9 +22,9 @@ def home():
 def set_mac():
     mac.mac = request.form['mac']
     mac.best_seen = -120
-    mac.last_seen = 0
+    mac.last_seen_time = 0
+    mac.last_best_time = 0
     return redirect(url_for('home', mac=mac))
-
 
 @app.route('/df', methods=['POST', 'GET'])
 def df():
@@ -37,12 +37,15 @@ def df():
             response[0] = 120 - (int(rssi) * -1)
             response[1] = rssi
             response[2] = mac.current_channel
+            current_time = time.time()
             if rssi > mac.best_seen:
                 mac.best_seen = rssi
-                mac.last_seen = time.time()
+                mac.last_best_time = current_time
             response[3] = mac.best_seen
-            time_since = int(time.time() - mac.last_seen)
-            response[4] = time_since
+            time_since_best = int(time.time() - mac.last_best_time)
+            mac.last_seen_time = current_time - results[0]['kismet.device.base.last_time']
+            response[4] = time_since_best
+            response[5] = mac.last_seen_time
             return_string = 'data:' + json.dumps(response) + "\n\n"
             yield return_string
             time.sleep(.2)

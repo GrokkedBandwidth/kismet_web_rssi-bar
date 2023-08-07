@@ -16,6 +16,10 @@ hr {
 .progress-bar {
     background: -webkit-linear-gradient(left, #33156d 0%, #f282bc 100%);
 }
+
+.progress-bar-stale {
+    background: -webkit-linear-gradient(left, #5A5A5A 0%, #000 100%);
+}
 .interface-container {
     display: flex;
     flex-direction: column;

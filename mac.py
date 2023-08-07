@@ -4,10 +4,11 @@ class Mac:
     def __init__(self):
         self.username = 'kismet'
         self.password = 'kismet'
-        self.IP = 'localhost'
+        self.IP = '192.168.1.167'
         self.mac = "FF:FF:FF:FF:FF:FF"
         self.best_seen = -120
-        self.last_seen = 0
+        self.last_seen_time = 0
+        self.last_best_time = 0
         self.current_channel = 0
         self.url = f"http://{self.username}:{self.password}@{self.IP}:2501/"
         self.source_params = {
