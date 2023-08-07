@@ -83,7 +83,3 @@ class Mac:
         requests.post(
             url=f"{self.url}datasource/by-uuid/{uuid}/set_channel.cmd",
             json={'channel': channel})
-
-
-
-
