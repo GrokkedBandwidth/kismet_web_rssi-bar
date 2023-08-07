@@ -10,12 +10,14 @@ class Mac:
         self.last_seen_time = 0
         self.last_best_time = 0
         self.current_channel = 0
+        self.bssid = "FF:FF:FF:FF:FF:FF"
         self.url = f"http://{self.username}:{self.password}@{self.IP}:2501/"
         self.source_params = {
             'fields': [
                 'kismet.datasource.channels',
                 'kismet.datasource.uuid',
                 "kismet.datasource.interface",
+                "kismet.datasource.capture_interface",
                 "kismet.datasource.hopping",
                 "kismet.datasource.channel",
                 "kismet.datasource.hop_channels"
@@ -29,6 +31,7 @@ class Mac:
                 "kismet.device.base.channel",
                 'kismet.device.base.location/kismet.common.location.last/kismet.common.location.geopoint',
                 'kismet.device.base.key',
+                "dot11.device/dot11.device.last_bssid",
                 'kismet.common.seenby.uuid'
             ],
             'datatable': True
@@ -70,7 +73,7 @@ class Mac:
                         'channels': item['kismet.datasource.channels'],
                         'hoprate': 5
                     }
-
+                    print(params['channels'])
                     requests.post(
                         url=f"{self.url}datasource/by-uuid/{uuid}/set_channel.cmd",
                         json=params)
@@ -83,3 +86,4 @@ class Mac:
         requests.post(
             url=f"{self.url}datasource/by-uuid/{uuid}/set_channel.cmd",
             json={'channel': channel})
+

@@ -191,6 +191,25 @@ $('a.four').on('click', function(e) {
 };
 xhr.send();
 });
+$('button.deauth').on('click', function(e) {
+    e.preventDefault();
+    var interface = e.currentTarget.parentNode.children[0].textContent;
+    console.log(interface)
+    var reason = e.currentTarget.parentNode.children[1].value;
+    var count = e.currentTarget.parentNode.children[2].value;
+    var behavior = e.currentTarget.parentNode.children[3].children[0].checked;
+    var xhr = new XMLHttpRequest();
+    var url = "deauth/" + encodeURIComponent(JSON.stringify({"interface": interface})) + "/" + encodeURIComponent(JSON.stringify({"reason": reason})) + "/" + encodeURIComponent(JSON.stringify({"count": count})) + "/" + encodeURIComponent(JSON.stringify({"behavior": behavior}));
+    xhr.open("GET", url, true);
+    console.log(url)
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+        console.log("worked");
+    }
+    };
+    xhr.send();
+    });
 
 $('#df').on('click', function(e) {
     console.log(e);

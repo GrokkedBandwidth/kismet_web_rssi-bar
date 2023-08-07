@@ -25,7 +25,20 @@ hr {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 2% 0;
 }
+.deauth-container {
+    display: flex;
+    justify-content: center;
+    margin: 1% 0;
+}
+.deauth-option {
+    margin: 0 2%;
+}
+.deauth-input {
+    border-radius: 5%;
+}
+
 .pre-select-options {
     display: flex;
     justify-content: space-between;
@@ -44,3 +57,4 @@ hr {
 .pre-select {
     margin: 2px;
 }
+

