@@ -216,5 +216,9 @@ $('#df').on('click', function(e) {
     $('#df').attr("onclick", "stopDF()")
 });
 
+$(function() {
+    $(document).tooltip();
+});
+
 
 
