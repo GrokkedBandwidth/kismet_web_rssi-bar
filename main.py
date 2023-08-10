@@ -64,17 +64,14 @@ def lock_channel(uuid, channel):
 def survey_channels(uuid, option):
     uuid = json.loads(uuid)['uuid']
     option = json.loads(option)['option']
-    match option:
-        case "one":
-            mac.survey_channels(uuid=uuid, span=mac.one_six_eleven_params)
-        case "two":
-            mac.survey_channels(uuid=uuid, span=mac.two_full_params)
-        case "three":
-            mac.survey_channels(uuid=uuid, span=mac.five_full_params)
-        case "four":
-            mac.survey_channels(uuid=uuid, span="all")
-        case _:
-            pass
+    if option == "one":
+        mac.survey_channels(uuid=uuid, span=mac.one_six_eleven_params)
+    elif option == "two":
+        mac.survey_channels(uuid=uuid, span=mac.two_full_params)
+    elif option == "three":
+        mac.survey_channels(uuid=uuid, span=mac.five_full_params)
+    elif option == "four":
+        mac.survey_channels(uuid=uuid, span="all")
     return f"New channels set for {uuid}"
 
 @app.route("/deauth/<string:interface>/<string:reason>/<string:count>/<string:behavior>")
