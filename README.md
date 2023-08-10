@@ -20,11 +20,39 @@ python3 main.py
 After launching, navigate to the provided link, which should be the local machines IP at port 5001
 
 ## Manual 
-![image](https://user-images.githubusercontent.com/96986202/224188916-2d3dd191-5296-4cfd-94f2-4f3d8310014d.png)
+![](images/GUI.png)
 
-Rssi bar can be started without Kismet being started, but will not DF without an active Kismet server at the targeted IP address. 
-Once a MAC is entered, hit 'Set MAC' and 'Start DF'. Once set, the Enter MAC label will change to the current MAC address and the Current Channel label
-will reflect current channel in Kismet. Lock Channel button will set the channel of all active Kismet interfaces to the Current Channel label.
+Kismet Web RSSI Bar requires an active instance of Kismet to be running to start. The RSSI Bar assumes that the Kismet
+server's IP is 127.0.0.1, or localhost. To change that, open mac.py and change self.ip to point to the Kismet server.
+To operate the RSSI Bar, a MAC needs to be entered in the input, followed by pressing the Set MAC button. This will change
+the label next to the target MAC. Once target is set, hit Start DF button. 
+
+Audio is by default set to mute but can be toggled with the Start Audio button. To change this default behavior, change
+the variable mute within static/js/index.js to false. For channel configuration options, the only interfaces that will be
+shown are datasources that have already been enabled. The Kismet Web RSSI Bar currently does not allow starting or 
+stopping sources. If a new source is added after the RSSI Bar is started, just refresh the page. 
+
+For Deauth functionality to work properly, the below conditions must be met:
+* The program must be run with root privileges
+* Server must be run on the same machine that is running Kismet
+* Server must be run on a Linux machine
+
+### Running Server as Root
+To run the server as root, the following command can be used:
+````
+sudo python3 ../kismet_web_rssi_bar/main.py
+````
+Remember that to run the server as root, all python libraries will also need to be re-installed as root. 
+
+### Running Server on Kismet Machine
+The Deauth functionality is implemented with a Python library called Scapy that interacts with the wlan sources. The way
+background commands are written, Scapy assumes that the cards are locally located, and not at a remote Kismet server.
+Therefore, if self.IP within mac.py is anything but "localhost" or "127.0.0.1", this functionality will not work. 
+
+It is important to make the distinction that if the Kismet server machine is running the RSSI Bar server as well,
+a remote device can send Deauths using the GUI because the commands are executed locally on the Kismet machine, and not
+executed on the remote device that is viewing the server. This is the intended utilization of this program.
+
 
 ## Kismet Server Login
 
@@ -39,3 +67,11 @@ The following is the intended features to be added to this project:
 * Options menu (For ui preferences and Kismet Server changes)
 * Active Direction Finding
 * Mapping UI
+
+## Issues
+
+For any issues encountered, please email me at grokkedbandwidth@gmail.com with the following:
+* Screen capture of terminal output of error (if there is any)
+* Detailed description of the issue
+* If suggestion, detailed description of what changes you want made
+
