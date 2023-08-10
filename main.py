@@ -5,9 +5,7 @@ import json
 import time
 import scapy.layers.dot11
 from scapy.all import sendp
-
 from mac import Mac
-from random import randint
 
 mac = Mac()
 app = Flask(__name__)
@@ -123,19 +121,6 @@ def deauth(interface, reason, count, behavior):
                 sendp(frame_client, iface=interface, count=1)
     shoot(behavior=behavior, count=count)
     return f"{count} deauths sent to {mac.mac} from {mac.bssid}"
-
-@app.route('/test', methods=['POST', 'GET'])
-def test():
-    def generate():
-        while True:
-            response = {}
-            randum_num = randint(1, 100)
-            response[0] = randum_num
-            return_string = 'data:' + json.dumps(response) + "\n\n"
-            print(f'{return_string} test data')
-            yield return_string
-            time.sleep(.2)
-    return Response(generate(), mimetype='text/event-stream')
 
 
 if __name__ == "__main__":
