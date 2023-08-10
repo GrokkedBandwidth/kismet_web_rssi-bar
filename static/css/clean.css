@@ -58,3 +58,27 @@ hr {
     margin: 2px;
 }
 
+@media (max-width: 575px) {
+    .col-sm-6 {
+        display: flex;
+        justify-content: center;
+    }
+    .nav-tabs {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 810px) {
+      .deauth-container {
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+    }
+    .deauth-option {
+        padding: 2%;
+        margin: 2% 0;
+        text-align: center;
+    }
+
+}
