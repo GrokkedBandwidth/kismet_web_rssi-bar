@@ -10,6 +10,9 @@ class Mac:
         self.last_seen_time = 0
         self.last_best_time = 0
         self.current_channel = 0
+        self.lat = ""
+        self.lon = ""
+        self.location = ""
         self.bssid = "FF:FF:FF:FF:FF:FF"
         self.url = f"http://{self.username}:{self.password}@{self.IP}:2501/"
         self.source_params = {
@@ -20,7 +23,7 @@ class Mac:
                 "kismet.datasource.capture_interface",
                 "kismet.datasource.hopping",
                 "kismet.datasource.channel",
-                "kismet.datasource.hop_channels"
+                "kismet.datasource.hop_channels",
             ]
         }
         self.target_params = {
@@ -32,7 +35,7 @@ class Mac:
                 'kismet.device.base.location/kismet.common.location.last/kismet.common.location.geopoint',
                 'kismet.device.base.key',
                 "dot11.device/dot11.device.last_bssid",
-                'kismet.common.seenby.uuid'
+                'kismet.common.seenby.uuid',
             ],
             'datatable': True
         }

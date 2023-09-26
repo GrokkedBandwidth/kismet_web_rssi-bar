@@ -47,6 +47,7 @@ function dfFunction() {
         best_seen = "#best";
         $(best_seen).text('Best Seen: '+sent_data[3] + ' Time: ' + sent_data[4]);
         current_rssi = "#current_rssi";
+        $("#location").text('Best Seen Location: '+sent_data[6])
         $(current_rssi).text('Current RSSI: '+sent_data[1]);
         if (mute === false) {
             adjustSound(oscillator, sent_data[0]*8);
