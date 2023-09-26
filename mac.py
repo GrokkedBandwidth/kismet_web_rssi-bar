@@ -4,7 +4,7 @@ class Mac:
     def __init__(self):
         self.username = 'kismet'
         self.password = 'kismet'
-        self.IP = 'localhost'
+        self.IP = '192.168.1.167'
         self.mac = "FF:FF:FF:FF:FF:FF"
         self.best_seen = -120
         self.last_seen_time = 0
@@ -74,6 +74,24 @@ class Mac:
                 if item['kismet.datasource.uuid'] == uuid:
                     params = {
                         'channels': item['kismet.datasource.channels'],
+                        'hoprate': 5
+                    }
+                    print(params['channels'])
+                    requests.post(
+                        url=f"{self.url}datasource/by-uuid/{uuid}/set_channel.cmd",
+                        json=params)
+        elif span == "function_all":
+            for item in self.interfaces:
+                if item['kismet.datasource.uuid'] == uuid:
+                    channel_list = []
+                    for channel in item['kismet.datasource.channels']:
+                        if len(channel) > 3:
+                            pass
+                        else:
+                            channel_list.append(channel)
+
+                    params = {
+                        'channels': channel_list,
                         'hoprate': 5
                     }
                     print(params['channels'])

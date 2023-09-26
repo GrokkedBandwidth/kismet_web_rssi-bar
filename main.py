@@ -81,6 +81,8 @@ def survey_channels(uuid, option):
         mac.survey_channels(uuid=uuid, span=mac.five_full_params)
     elif option == "four":
         mac.survey_channels(uuid=uuid, span="all")
+    elif option == "five":
+        mac.survey_channels(uuid=uuid, span="function_all")
     return f"New channels set for {uuid}"
 
 @app.route("/deauth/<string:interface>/<string:reason>/<string:count>/<string:behavior>")

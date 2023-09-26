@@ -78,6 +78,8 @@
                         <a class="btn btn-success pre-select three" href="{{ url_for('survey_channels', uuid=item['kismet.datasource.uuid'], option='three')}}">5 GHz (No HT)</a>
                     {% endif %}
                     <a class="btn btn-success pre-select four" href="{{ url_for('survey_channels', uuid=item['kismet.datasource.uuid'], option='four')}}">All</a>
+                    <a class="btn btn-success pre-select five" href="{{ url_for('survey_channels', uuid=item['kismet.datasource.uuid'], option='five')}}">All (No HT)</a>
+
                 </div>
             {% endfor %}
         </div>

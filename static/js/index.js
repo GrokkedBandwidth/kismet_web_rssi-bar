@@ -192,6 +192,31 @@ $('a.four').on('click', function(e) {
 };
 xhr.send();
 });
+$('a.five').on('click', function(e) {
+    e.preventDefault();
+    var uuid = e.currentTarget.parentNode.classList[1];
+    var xhr = new XMLHttpRequest();
+    var url = "hop/" + encodeURIComponent(JSON.stringify({"uuid": uuid})) + "/" + encodeURIComponent(JSON.stringify({"option": "five"}));
+    xhr.open("GET", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+        var buttons = $('div.' + uuid)[0].children;
+        for (var i = 0; i < buttons.length; i++) {
+            if (buttons[i].textContent.length < 4) {
+                buttons[i].classList.remove("btn-outline-primary");
+                buttons[i].classList.add("btn-primary");
+            } else {
+                buttons[i].classList.remove("btn-primary");
+                buttons[i].classList.add("btn-outline-primary");
+            }
+
+        }
+    }
+};
+xhr.send();
+});
+
 $('button.deauth').on('click', function(e) {
     e.preventDefault();
     var interface = e.currentTarget.parentNode.children[0].textContent;
