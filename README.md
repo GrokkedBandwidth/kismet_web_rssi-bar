@@ -57,7 +57,7 @@ executed on the remote device that is viewing the server. This is the intended u
 ## Kismet Server Login
 
 Currently, there is no way to modify Kismet username, password, or IP from the server's GUI and must be modified within
-main.py prior to running. By default, username and password are both set to 'kismet' and IP is set to localhost.
+mac.py prior to running. By default, username and password are both set to 'kismet' and IP is set to localhost.
 
 ## Roadmap
 
